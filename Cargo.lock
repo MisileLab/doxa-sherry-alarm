@@ -383,6 +383,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "doxa-sherry-alarm"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "log",
+ "notify-rust",
+ "rodio",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "easy-parallel"
 version = "3.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1120,18 +1132,6 @@ dependencies = [
  "hound",
  "lewton",
  "minimp3",
-]
-
-[[package]]
-name = "rust-template"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "log",
- "notify-rust",
- "rodio",
- "serde",
- "serde_json",
 ]
 
 [[package]]
