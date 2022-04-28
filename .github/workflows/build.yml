@@ -20,6 +20,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: install dependency if ubuntu
+      if: runner.os == 'ubuntu-latest'
+      run: sudo apt install rustc cargo libasound2-dev libssl-dev pkg-config
     - name: Build
       run: cargo build --release
     - name: Upload build artifacts

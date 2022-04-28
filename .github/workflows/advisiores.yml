@@ -10,5 +10,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: install cargo deny
       run: cargo install --locked cargo-deny
+    - name: install dependencies
+      run: sudo apt install rustc cargo libasound2-dev libssl-dev pkg-config
     - name: check advisories
       run: cargo deny check advisories
