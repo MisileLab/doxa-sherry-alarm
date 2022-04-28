@@ -1,5 +1,5 @@
 [package]
-name = "rust-template"
+name = "doxa-sherry-alarm"
 version = "0.1.0"
 description = "yeah."
 repository = "https://github.com/misilelab/rust-template"
