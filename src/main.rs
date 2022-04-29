@@ -1,55 +1,56 @@
-use rodio::{Decoder, OutputStream, Source};
+use rodio::{Decoder, OutputStream, source::Source};
 
 use chrono::offset::Local;
 use chrono::Timelike;
 
 use serde::Deserialize;
 
-use log::warn;
-
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 use std::error::Error;
+use std::thread::sleep;
+use std::time::Duration;
 
 #[derive(Deserialize, Debug)]
 struct Config {
     dayhour: u8,
     daymin: u8,
-    daysec: u8,
     nighthour: u8,
-    nightmin: u8,
-    nightsec: u8
+    nightmin: u8
 }
 
 fn main() {
+    println!("Run alarm!");
     let config = read_user_from_file("config.json").unwrap();
-    let days = vec![config.dayhour, config.daymin, config.daysec];
-    let nights = vec![config.nighthour, config.nightmin, config.nightsec];
+    let days = vec![config.dayhour, config.daymin];
+    let nights = vec![config.nighthour, config.nightmin];
     loop {
-        let (_, day_stream) = OutputStream::try_default().unwrap();
-        let dayfile = BufReader::new(File::open("sounds/goodday.mp3").unwrap());
-        let daysource = Decoder::new(dayfile).unwrap();
-        let (_, night_stream) = OutputStream::try_default().unwrap();
-        let nightfile = BufReader::new(File::open("sounds/goodnight.mp3").unwrap());
-        let nightsource = Decoder::new(nightfile).unwrap();
         let nowtime = Local::now();
         let (hour, min, sec) = (nowtime.hour(), nowtime.minute(), nowtime.second());
-        if hour as u8 == days[0] && min as u8 == days[1] && sec as u8 == days[2] {
-            match day_stream.play_raw(daysource.convert_samples()) {
-                Ok(_) => {},
-                Err(_) => {
-                    warn!("Can't play day audio sample.");
-                }
+        if cfg!(debug_assertions) {
+            println!("{}h {}m {}s", hour, min, sec);
+        }
+        if hour as u8 == days[0] && min as u8 == days[1] && sec as u8 == 0 {
+            let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+            let file = BufReader::new(File::open("sounds/goodday.mp3").unwrap());
+            let source = Decoder::new(file).unwrap();
+            match stream_handle.play_raw(source.convert_samples()) {
+                Ok(_) => { 
+                    sleep(Duration::from_secs(16)) 
+                },
+                Err(e) => { println!("Error: {:?}", e) }
             };
-        } else if hour as u8 == nights[0] && min as u8 == nights[1] && sec as u8 == nights[2] {
-            match night_stream.play_raw(nightsource.convert_samples()) {
-                Ok(_) => {},
-                Err(_) => {
-                    warn!("Can't play night audio sample.");
-                }
+        } else if hour as u8 == nights[0] && min as u8 == nights[1] && sec as u8 == 0 {
+            let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+            let file = BufReader::new(File::open("sounds/goodnight.mp3").unwrap());
+            let source = Decoder::new(file).unwrap();
+            match stream_handle.play_raw(source.convert_samples()) {
+                Ok(_) => { sleep(Duration::from_secs(8)) },
+                Err(e) => { println!("Error: {:?}", e) }
             };
         }
+        sleep(Duration::from_secs(1));
     }
 }
 

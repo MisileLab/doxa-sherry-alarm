@@ -387,7 +387,6 @@ name = "doxa-sherry-alarm"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "log",
  "notify-rust",
  "rodio",
  "serde",

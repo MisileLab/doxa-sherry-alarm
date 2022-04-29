@@ -13,7 +13,6 @@ edition = "2021"
 
 [dependencies]
 rodio = "0.15.0"
-log = "0.4.16"
 notify-rust = "4.5.8"
 chrono = "0.4.19"
 serde = { version = "1.0", features = ["derive"] }
