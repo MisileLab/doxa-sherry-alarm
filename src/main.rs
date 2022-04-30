@@ -1,4 +1,4 @@
-use notify_rust::{Notification, Hint};
+use notify_rust::Notification;
 
 use rodio::{Decoder, OutputStream, source::Source};
 
