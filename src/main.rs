@@ -76,7 +76,6 @@ fn main() {
                         .summary("잘 자요.")
                         .action("5분만 더...", "5min")
                         .action("잘게", "on")
-                        .hint(Hint::Resident(true))
                         .show() {
                             Ok(notify) => {
                                 notify.wait_for_action(|action| match action {
