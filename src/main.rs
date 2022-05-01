@@ -44,6 +44,7 @@ fn main() {
                         .action("일어났어", "on")
                         .show() {
                             Ok(notify) => {
+                                #[cfg(all(unix, not(target_os = "macos")))]
                                 notify.wait_for_action(|action| match action {
                                     "5min" => {
                                         (days[0], days[1]) = add_minute(days[0], days[1], 5);
@@ -78,6 +79,7 @@ fn main() {
                         .action("잘게", "on")
                         .show() {
                             Ok(notify) => {
+                                #[cfg(all(unix, not(target_os = "macos")))]
                                 notify.wait_for_action(|action| match action {
                                     "5min" => {
                                         (nights[0], nights[1]) = add_minute(nights[0], nights[1], 5);
