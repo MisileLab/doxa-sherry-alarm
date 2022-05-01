@@ -115,6 +115,7 @@ fn read_user_from_file<P: AsRef<Path>>(path: P) -> Result<Config, Box<dyn Error>
     Ok(c)
 }
 
+#[cfg(all(unix, not(target_os = "macos")))]
 fn add_minute(mut hour: u8, mut min: u8, amount: u8) -> (u8, u8) {
     min = min + amount;
     if min >= 60 {
