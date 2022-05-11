@@ -7,6 +7,8 @@ use chrono::Timelike;
 
 use serde::Deserialize;
 
+use clap::Parser;
+
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
@@ -14,7 +16,9 @@ use std::error::Error;
 use std::thread::sleep;
 use std::time::Duration;
 
-#[derive(Deserialize, Debug)]
+
+#[derive(Deserialize, Debug, Parser)]
+#[clap(author, about, long_about = None)]
 struct Config {
     dayhour: u8,
     daymin: u8,
@@ -24,7 +28,10 @@ struct Config {
 
 fn main() {
     println!("Run alarm!");
-    let config = read_user_from_file("config.json").unwrap();
+    let config = match Config::try_parse() {
+        Ok(obj) => obj,
+        Err(_) => read_user_from_file("config.json").unwrap()
+    };
     let mut days = vec![config.dayhour, config.daymin];
     let mut nights = vec![config.nighthour, config.nightmin];
     loop {
