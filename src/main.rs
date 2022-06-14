@@ -34,6 +34,9 @@ fn main() {
     };
     let mut days = vec![config.dayhour, config.daymin];
     let mut nights = vec![config.nighthour, config.nightmin];
+    if cfg!(debug_assertions) {
+        println!("{:#?}", config);
+    }
     loop {
         let nowtime = Local::now();
         let (hour, min, sec) = (nowtime.hour(), nowtime.minute(), nowtime.second());
@@ -47,8 +50,8 @@ fn main() {
             match stream_handle.play_raw(source.convert_samples()) {
                 Ok(_) => {
                     match Notification::new().summary("일어나!")
-                        .action("5분만 더...", "5min")
-                        .action("일어났어", "on")
+                        .action("5min", "5분만 더..")
+                        .action("on", "일어났어")
                         .show() {
                             Ok(notify) => {
                                 #[cfg(all(unix, not(target_os = "macos")))]
@@ -82,8 +85,8 @@ fn main() {
                     match Notification::new()
                         .icon("assets/goodnight.mp3")
                         .summary("잘 자요.")
-                        .action("5분만 더...", "5min")
-                        .action("잘게", "on")
+                        .action("5min", "5분만 더..")
+                        .action("on", "잘게..")
                         .show() {
                             Ok(notify) => {
                                 #[cfg(all(unix, not(target_os = "macos")))]
