@@ -72,7 +72,7 @@ fn main() {
                                 println!("Error: {}", err)
                             }
                         }
-                    sleep(Duration::from_secs(16));  
+                    sleep(Duration::from_secs(18));  
                 },
                 Err(e) => { println!("Error: {:?}", e) }
             };
