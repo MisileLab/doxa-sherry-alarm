@@ -1,6 +1,8 @@
 {
     "dayhour": 1,
     "daymin": 2,
+    "daypm": false,
     "nighthour": 1,
-    "nightmin": 2
+    "nightmin": 2,
+    "nightpm": true
 }

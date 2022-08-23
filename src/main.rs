@@ -22,16 +22,24 @@ use std::time::Duration;
 struct Config {
     dayhour: u8,
     daymin: u8,
+    daypm: bool,
     nighthour: u8,
-    nightmin: u8
+    nightmin: u8,
+    nightpm: bool
 }
 
 fn main() {
     println!("Run alarm!");
-    let config = match Config::try_parse() {
+    let mut config = match Config::try_parse() {
         Ok(obj) => obj,
         Err(_) => read_user_from_file("config.json").unwrap()
     };
+    if config.daypm {
+        config.dayhour += 12;
+    }
+    if config.nightpm {
+        config.nightpm += 12;
+    }
     let mut days = vec![config.dayhour, config.daymin];
     let mut nights = vec![config.nighthour, config.nightmin];
     if cfg!(debug_assertions) {
@@ -76,7 +84,7 @@ fn main() {
                 },
                 Err(e) => { println!("Error: {:?}", e) }
             };
-        } else if hour as u8 == nights[0] && min as u8 == nights[1] && sec as u8 == 0 {
+        } else if hour == nights[0] && min == nights[1] && sec == 0 {
             let (_stream, stream_handle) = OutputStream::try_default().unwrap();
             let file = BufReader::new(File::open("sounds/goodnight.mp3").unwrap());
             let source = Decoder::new(file).unwrap();
