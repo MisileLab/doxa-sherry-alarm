@@ -51,7 +51,7 @@ fn main() {
         if cfg!(debug_assertions) {
             println!("{}h {}m {}s", hour, min, sec);
         }
-        if hour as u8 == days[0] && min as u8 == days[1] && sec as u8 == 0 {
+        if hour == days[0] && min == days[1] && sec == 0 {
             let (_stream, stream_handle) = OutputStream::try_default().unwrap();
             let file = BufReader::new(File::open("sounds/goodday.mp3").unwrap());
             let source = Decoder::new(file).unwrap();
@@ -134,7 +134,7 @@ fn read_user_from_file<P: AsRef<Path>>(path: P) -> Result<Config, Box<dyn Error>
 }
 
 #[cfg(all(unix, not(target_os = "macos")))]
-fn add_minute(mut hour: u8, mut min: u8, amount: u8) -> (u8, u8) {
+fn add_minute(mut hour: u32, mut min: u32, amount: u32) -> (u32, u32) {
     min = min + amount;
     if min >= 60 {
         min = min - amount;
