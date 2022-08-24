@@ -20,11 +20,11 @@ use std::time::Duration;
 #[derive(Deserialize, Debug, Parser)]
 #[clap(author, about, long_about = None)]
 struct Config {
-    dayhour: u8,
-    daymin: u8,
+    dayhour: u32,
+    daymin: u32,
     daypm: bool,
-    nighthour: u8,
-    nightmin: u8,
+    nighthour: u32,
+    nightmin: u32,
     nightpm: bool
 }
 
@@ -38,7 +38,7 @@ fn main() {
         config.dayhour += 12;
     }
     if config.nightpm {
-        config.nightpm += 12;
+        config.nighthour += 12;
     }
     let mut days = vec![config.dayhour, config.daymin];
     let mut nights = vec![config.nighthour, config.nightmin];
